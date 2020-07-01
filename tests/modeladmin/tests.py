@@ -101,7 +101,7 @@ class ModelAdminTests(TestCase):
             fields = ['name']
 
         ma = BandAdmin(Band, self.site)
-        self.assertTrue(ma.lookup_allowed('name__nonexistent', 'test_value'))
+        self.assertTrue(ma.lookup_allowed(request, 'name__nonexistent', 'test_value'))
 
     @isolate_apps('modeladmin')
     def test_lookup_allowed_onetoone(self):
@@ -126,9 +126,9 @@ class ModelAdminTests(TestCase):
 
         ma = EmployeeProfileAdmin(EmployeeProfile, self.site)
         # Reverse OneToOneField
-        self.assertIs(ma.lookup_allowed('employee__employeeinfo__description', 'test_value'), True)
+        self.assertIs(ma.lookup_allowed(request, 'employee__employeeinfo__description', 'test_value'), True)
         # OneToOneField and ForeignKey
-        self.assertIs(ma.lookup_allowed('employee__department__code', 'test_value'), True)
+        self.assertIs(ma.lookup_allowed(request, 'employee__department__code', 'test_value'), True)
 
     def test_field_arguments(self):
         # If fields is specified, fieldsets_add and fieldsets_change should
