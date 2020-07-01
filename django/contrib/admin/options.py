@@ -374,7 +374,7 @@ class BaseModelAdmin(metaclass=forms.MediaDefiningClass):
         """Hook for specifying which fields can be sorted in the changelist."""
         return self.sortable_by if self.sortable_by is not None else self.get_list_display(request)
 
-    def lookup_allowed(self, lookup, value):
+    def lookup_allowed(self, request, lookup, value):
         from django.contrib.admin.filters import SimpleListFilter
 
         model = self.model
@@ -414,7 +414,7 @@ class BaseModelAdmin(metaclass=forms.MediaDefiningClass):
             # Either a local field filter, or no fields at all.
             return True
         valid_lookups = {self.date_hierarchy}
-        for filter_item in self.list_filter:
+        for filter_item in self.get_list_filter(request):
             if isinstance(filter_item, type) and issubclass(filter_item, SimpleListFilter):
                 valid_lookups.add(filter_item.parameter_name)
             elif isinstance(filter_item, (list, tuple)):

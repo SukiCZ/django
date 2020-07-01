@@ -88,9 +88,9 @@ class UserAdmin(admin.ModelAdmin):
             ),
         ] + super().get_urls()
 
-    def lookup_allowed(self, lookup, value):
+    def lookup_allowed(self, request, lookup, value):
         # Don't allow lookups involving passwords.
-        return not lookup.startswith('password') and super().lookup_allowed(lookup, value)
+        return not lookup.startswith('password') and super().lookup_allowed(request, lookup, value)
 
     @sensitive_post_parameters_m
     @csrf_protect_m
